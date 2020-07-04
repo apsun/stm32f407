@@ -1,0 +1,54 @@
+MEMORY
+{
+  FLASH (rx) : ORIGIN = 0x8000000, LENGTH = 1024K
+  RAM (rw) : ORIGIN = 0x20000000, LENGTH = 128K
+}
+
+SECTIONS
+{
+  .isr_vector :
+  {
+    . = ALIGN(4);
+    KEEP(*(.isr_vector))
+    . = ALIGN(4);
+  } >FLASH
+
+  .text :
+  {
+    . = ALIGN(4);
+    *(.text)
+    . = ALIGN(4);
+  } >FLASH
+
+  .rodata :
+  {
+    . = ALIGN(4);
+    *(.rodata)
+    . = ALIGN(4);
+  } >FLASH
+
+  .data :
+  {
+    _sdata = .;
+    . = ALIGN(4);
+    *(.data)
+    . = ALIGN(4);
+    _edata = .;
+  } >RAM AT> FLASH /* address is in RAM, but initializer data is in flash */
+
+  .bss :
+  {
+    _sbss = .;
+    . = ALIGN(4);
+    *(.bss)
+    *(COMMON)
+    . = ALIGN(4);
+    _ebss = .;
+  } >RAM
+}
+
+/* stack top is at the end of the heap */
+_estack = 0x20020000;
+
+/* where the initializer data is in flash */
+_sidata = LOADADDR(.data);
