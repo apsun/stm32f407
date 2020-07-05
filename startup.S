@@ -1,4 +1,5 @@
 /* some assembler parameters */
+.syntax unified
 .thumb
 .cpu cortex-m4
 

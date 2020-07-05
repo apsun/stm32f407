@@ -28,7 +28,9 @@ void gpio_init_for_led(int pin) {
 }
 
 void delay(void) {
-    for (int i = 0; i < 100000; ++i);
+    for (int i = 0; i < 200000; ++i) {
+        __asm volatile("nop");
+    }
 }
 
 int main(void) {
