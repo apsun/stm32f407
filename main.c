@@ -13,7 +13,7 @@ void gpio_clock_on(void) {
 }
 
 void gpio_set(int pin, bool on) {
-    *(reg_t *)GPIOD_BSRR = ((1U << pin) << ((uint32_t)!on << 4));
+    *(reg_t *)GPIOD_BSRR = ((1U << pin) << (on ? 0 : 16));
 }
 
 bool gpio_get(int pin) {
@@ -37,13 +37,29 @@ int main(void) {
     gpio_init_for_led(GPIO_PIN_LED4);
     gpio_init_for_led(GPIO_PIN_LED5);
     gpio_init_for_led(GPIO_PIN_LED6);
-    int n = 0;
     while (1) {
-        gpio_set(GPIO_PIN_LED3, (n + 0) % 4 == 0);
-        gpio_set(GPIO_PIN_LED4, (n + 1) % 4 == 0);
-        gpio_set(GPIO_PIN_LED6, (n + 2) % 4 == 0);
-        gpio_set(GPIO_PIN_LED5, (n + 3) % 4 == 0);
-        delay();
-        n++;
+        for (int i = 0; i < 16; ++i) {
+            gpio_set(GPIO_PIN_LED3, (i + 0) % 4 == 0);
+            gpio_set(GPIO_PIN_LED4, (i + 1) % 4 == 0);
+            gpio_set(GPIO_PIN_LED6, (i + 2) % 4 == 0);
+            gpio_set(GPIO_PIN_LED5, (i + 3) % 4 == 0);
+            delay();
+        }
+
+        for (int i = 0; i < 16; ++i) {
+            gpio_set(GPIO_PIN_LED3, (i + 0) % 8 >= 4);
+            gpio_set(GPIO_PIN_LED4, (i + 1) % 8 >= 4);
+            gpio_set(GPIO_PIN_LED6, (i + 2) % 8 >= 4);
+            gpio_set(GPIO_PIN_LED5, (i + 3) % 8 >= 4);
+            delay();
+        }
+
+        for (int i = 0; i < 16; ++i) {
+            gpio_set(GPIO_PIN_LED3, i % 2 == 0);
+            gpio_set(GPIO_PIN_LED4, i % 2 == 1);
+            gpio_set(GPIO_PIN_LED6, i % 2 == 0);
+            gpio_set(GPIO_PIN_LED5, i % 2 == 1);
+            delay();
+        }
     }
 }
