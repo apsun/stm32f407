@@ -47,7 +47,7 @@ SECTIONS
   } >RAM
 }
 
-/* stack top is at the end of the heap */
+/* place stack top at the end of RAM */
 _estack = 0x20020000;
 
 /* where the initializer data is in flash */

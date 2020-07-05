@@ -14,3 +14,11 @@ and documents the system architecture and registers.
 
 The [STM32CubeF4 projects](https://github.com/STMicroelectronics/STM32CubeF4)
 can also be super useful as a code reference.
+
+List of tools you'll need:
+- gcc and gdb cross compiled for ARM
+- openocd (for debugging)
+- stlink (for flashing the board)
+
+Running `make install` will flash the board. `make debug` will
+do the same and start gdb afterwards.
