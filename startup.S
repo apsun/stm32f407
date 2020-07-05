@@ -1,8 +1,6 @@
 /* some assembler parameters */
 .thumb
-.arch armv7-m
 .cpu cortex-m4
-.fpu softvfp
 
 /* defined in linker script */
 .word _sidata
