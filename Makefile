@@ -4,7 +4,7 @@ CC = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
 DB = arm-none-eabi-gdb
 
-CFLAGS += -Wall -Wextra -Werror -nostdinc -ffreestanding -mthumb -mcpu=cortex-m4
+CFLAGS += -Wall -Wextra -nostdinc -ffreestanding -mthumb -mcpu=cortex-m4
 LDFLAGS += -Tlinker.ld -nostdlib -static
 
 all: rom.bin

@@ -9,10 +9,11 @@
 
 void gpio_clock_on(void) {
     *(reg_t *)RCC_AHB1ENR |= RCC_AHB1ENR_GPIODEN;
+    (void)*(reg_t *)RCC_AHB1ENR;
 }
 
 void gpio_set(int pin, bool on) {
-    *(reg_t *)GPIOD_BSRR = ((1U << pin) << ((uint32_t)on << 4U));
+    *(reg_t *)GPIOD_BSRR = ((1U << pin) << ((uint32_t)!on << 4U));
 }
 
 bool gpio_get(int pin) {
@@ -26,14 +27,23 @@ void gpio_init_for_led(int pin) {
     *(reg_t *)GPIOD_MODER |= GPIOD_MODER_OUTPUT << (pin * 2U);
 }
 
+void delay(void) {
+    for (int i = 0; i < 100000; ++i);
+}
+
 int main(void) {
     gpio_clock_on();
     gpio_init_for_led(GPIO_PIN_LED3);
     gpio_init_for_led(GPIO_PIN_LED4);
     gpio_init_for_led(GPIO_PIN_LED5);
     gpio_init_for_led(GPIO_PIN_LED6);
-    gpio_set(GPIO_PIN_LED4, true);
+    int n = 0;
     while (1) {
+        gpio_set(GPIO_PIN_LED3, (n + 0) % 4 == 0);
+        gpio_set(GPIO_PIN_LED4, (n + 1) % 4 == 0);
+        gpio_set(GPIO_PIN_LED6, (n + 2) % 4 == 0);
+        gpio_set(GPIO_PIN_LED5, (n + 3) % 4 == 0);
+        delay();
+        n++;
     }
-    return 0;
 }
