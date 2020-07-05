@@ -24,7 +24,7 @@ _start_copy_data:
   ldr r2, =_sidata
 _start_copy_data_loop:
   cmp r0, r1
-  bcc _start_zero_bss
+  bcs _start_zero_bss
   ldr r3, [r2]
   str r3, [r0]
   add r2, r2, #4
@@ -37,7 +37,7 @@ _start_zero_bss:
   mov r2, #0
 _start_zero_bss_loop:
   cmp r0, r1
-  bcc _start_call_main
+  bcs _start_call_main
   str r2, [r0]
   add r0, r0, #4
   b _start_zero_bss_loop
