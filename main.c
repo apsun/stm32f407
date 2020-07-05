@@ -13,18 +13,18 @@ void gpio_clock_on(void) {
 }
 
 void gpio_set(int pin, bool on) {
-    *(reg_t *)GPIOD_BSRR = ((1U << pin) << ((uint32_t)!on << 4U));
+    *(reg_t *)GPIOD_BSRR = ((1U << pin) << ((uint32_t)!on << 4));
 }
 
 bool gpio_get(int pin) {
-    return (*(reg_t *)GPIOD_ODR & (1 << pin)) == (1U << pin);
+    return (*(reg_t *)GPIOD_ODR & (1U << pin)) == (1U << pin);
 }
 
 void gpio_init_for_led(int pin) {
-    *(reg_t *)GPIOD_OSPEEDR |= GPIOD_OSPEEDR_HI << (pin * 2U);
-    *(reg_t *)GPIOD_OTYPER |= GPIOD_OTYPER_PP;
-    *(reg_t *)GPIOD_PUPDR |= GPIOD_PUPDR_PU << (pin * 2U);
-    *(reg_t *)GPIOD_MODER |= GPIOD_MODER_OUTPUT << (pin * 2U);
+    *(reg_t *)GPIOD_OSPEEDR |= GPIOD_OSPEEDR_HI << (pin * 2);
+    *(reg_t *)GPIOD_OTYPER |= GPIOD_OTYPER_PP << pin;
+    *(reg_t *)GPIOD_PUPDR |= GPIOD_PUPDR_PU << (pin * 2);
+    *(reg_t *)GPIOD_MODER |= GPIOD_MODER_OUTPUT << (pin * 2);
 }
 
 void delay(void) {
