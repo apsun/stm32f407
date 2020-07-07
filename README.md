@@ -12,6 +12,11 @@ Want to follow along at home? You can buy this board in the US
 The reference manual can be found [here](https://www.st.com/resource/en/reference_manual/dm00031020-stm32f405415-stm32f407417-stm32f427437-and-stm32f429439-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
 and documents the system architecture and registers.
 
+The [ARMv7-M reference manual](https://static.docs.arm.com/ddi0403/eb/DDI0403E_B_armv7m_arm.pdf)
+contains a reference for the instruction set. Be careful not to
+accidentally use the ARMv7-A/R manual; it is completely different
+from the ARMv7-M manual.
+
 The [STM32CubeF4 projects](https://github.com/STMicroelectronics/STM32CubeF4)
 can also be super useful as a code reference.
 

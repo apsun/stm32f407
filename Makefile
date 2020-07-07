@@ -24,7 +24,7 @@ install: rom.bin
 debug: rom.elf install
 	$(DB) -x openocd.gdbinit $<
 
-.PHONY: disas
+.PHONY: objdump
 objdump: rom.elf
 	$(OBJDUMP) -dw $< | less
 
