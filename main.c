@@ -69,7 +69,7 @@ static void button_init_exti(void) {
 }
 
 static void button_init_nvic(void) {
-    NVIC_ISER(IRQ_EXTI0 / 32) = (1U << IRQ_EXTI0);
+    NVIC_ISER(IRQ_EXTI0 / 32) = (1U << (IRQ_EXTI0 % 32));
 }
 
 static void button_init(bool interrupts) {
@@ -96,6 +96,7 @@ static void handle_irq_button(void) {
 }
 
 void exception_handler(int n) {
+    // Halt on faults
     if (n <= 6) {
         while (1);
     }
