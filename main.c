@@ -45,21 +45,14 @@ static void button_init_gpio(void) {
 }
 
 static void exti_map_gpio(int exti, int port) {
-    static reg_t * const regs[] = {
-        &SYSCFG_EXTICR1,
-        &SYSCFG_EXTICR2,
-        &SYSCFG_EXTICR3,
-        &SYSCFG_EXTICR4,
-    };
-
     // System configuration controller is needed to manage EXTI so we
     // have to enable its clock here
     clock_enable(&RCC_APB2ENR, RCC_APB2ENR_SYSCFGEN);
 
     // EXTICR1 contains EXTI0-EXTI3, EXTICR2 contains EXTI4-EXTI7, etc.
     // Each register is 4 lines * 4 bits each, bits are 0 for port A,
-    // 1 for port B, etc.
-    *regs[exti / 4] |= (port << (4 * (exti % 4)));
+    // 1 for port B, 2 for port C, etc.
+    SYSCFG_EXTICR(exti / 4) |= (port << (4 * (exti % 4)));
 }
 
 static void exti_clear_irq(int exti) {
@@ -76,7 +69,7 @@ static void button_init_exti(void) {
 }
 
 static void button_init_nvic(void) {
-    NVIC_ISER(IRQ_EXTI0 / 32) = (1 << IRQ_EXTI0);
+    NVIC_ISER(IRQ_EXTI0 / 32) = (1U << IRQ_EXTI0);
 }
 
 static void button_init(bool interrupts) {

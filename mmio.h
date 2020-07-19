@@ -7,19 +7,16 @@ typedef volatile uint32_t reg_t;
 
 #define SCS_BASE                        0xE000E000UL
   #define NVIC_BASE                     (SCS_BASE + 0x100UL)
-    #define NVIC_ISER(n)                REG(NVIC_BASE + 0x000UL + ((n) * 4))
-    #define NVIC_ICER(n)                REG(NVIC_BASE + 0x080UL + ((n) * 4))
-    #define NVIC_ISPR(n)                REG(NVIC_BASE + 0x100UL + ((n) * 4))
-    #define NVIC_ICPR(n)                REG(NVIC_BASE + 0x180UL + ((n) * 4))
-    #define NVIC_IABR(n)                REG(NVIC_BASE + 0x200UL + ((n) * 4))
+    #define NVIC_ISER(n)                REG(NVIC_BASE + 0x000UL + (n) * 4UL)
+    #define NVIC_ICER(n)                REG(NVIC_BASE + 0x080UL + (n) * 4UL)
+    #define NVIC_ISPR(n)                REG(NVIC_BASE + 0x100UL + (n) * 4UL)
+    #define NVIC_ICPR(n)                REG(NVIC_BASE + 0x180UL + (n) * 4UL)
+    #define NVIC_IABR(n)                REG(NVIC_BASE + 0x200UL + (n) * 4UL)
 
 #define PERIPH_BASE                     0x40000000UL
   #define APB2PERIPH_BASE               (PERIPH_BASE + 0x00010000UL)
     #define SYSCFG_BASE                 (APB2PERIPH_BASE + 0x3800UL)
-      #define SYSCFG_EXTICR1            REG(SYSCFG_BASE + 0x08UL)
-      #define SYSCFG_EXTICR2            REG(SYSCFG_BASE + 0x0CUL)
-      #define SYSCFG_EXTICR3            REG(SYSCFG_BASE + 0x10UL)
-      #define SYSCFG_EXTICR4            REG(SYSCFG_BASE + 0x04UL)
+      #define SYSCFG_EXTICR(n)          REG(SYSCFG_BASE + 0x08UL + (n) * 4UL)
     #define EXTI_BASE                   (APB2PERIPH_BASE + 0x3C00UL)
       #define EXTI_IMR                  REG(EXTI_BASE + 0x00UL)
       #define EXTI_RTSR                 REG(EXTI_BASE + 0x08UL)
