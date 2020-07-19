@@ -1,5 +1,6 @@
 #include "stdint.h"
 #include "stdbool.h"
+#include "string.h"
 #include "mmio.h"
 
 #define GPIO_PIN_BUTTON 0
@@ -84,24 +85,25 @@ static bool button_get(void) {
     return (GPIO_IDR(GPIOA_BASE) & (1U << GPIO_PIN_BUTTON)) == (1U << GPIO_PIN_BUTTON);
 }
 
-static void delay(void) {
-    for (int i = 0; i < 200000; ++i) {
-        __asm volatile("nop");
-    }
-}
-
 static void handle_irq_button(void) {
     pattern = (pattern + 1) % 3;
     exti_clear_irq(GPIO_PIN_BUTTON);
 }
 
-void exception_handler(int n) {
-    // Halt on faults
-    if (n <= 6) {
-        while (1);
-    }
+static void halt(void) {
+    while (1);
+}
 
-    if (n == 16 + IRQ_EXTI0) {
+static void delay(void) {
+    for (int i = 0; i < 200000; ++i) {
+        asm volatile("nop");
+    }
+}
+
+void isr(int n) {
+    if (n < 16) {
+        halt();
+    } else if (n == 16 + IRQ_EXTI0) {
         handle_irq_button();
     }
 }
@@ -110,7 +112,7 @@ int main(void) {
     led_init();
     button_init(true);
 
-    for (int i = 0; ; i++) {
+    for (int i = 0; ; ++i) {
         if (button_get()) {
             led_set(GPIO_PIN_LED3, true);
             led_set(GPIO_PIN_LED4, true);
