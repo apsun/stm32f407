@@ -17,6 +17,7 @@ SECTIONS
   {
     . = ALIGN(4);
     *(.text)
+    *(.text*)
     . = ALIGN(4);
   } >FLASH
 
@@ -24,6 +25,7 @@ SECTIONS
   {
     . = ALIGN(4);
     *(.rodata)
+    *(.rodata*)
     . = ALIGN(4);
   } >FLASH
 
@@ -32,6 +34,7 @@ SECTIONS
     _sdata = .;
     . = ALIGN(4);
     *(.data)
+    *(.data*)
     . = ALIGN(4);
     _edata = .;
   } >RAM AT> FLASH /* address is in RAM, but initializer data is in flash */
@@ -41,6 +44,7 @@ SECTIONS
     _sbss = .;
     . = ALIGN(4);
     *(.bss)
+    *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     _ebss = .;

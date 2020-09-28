@@ -6,15 +6,19 @@ OBJDUMP = arm-none-eabi-objdump
 DB = arm-none-eabi-gdb
 
 CFLAGS += -Wall -Wextra -nostdinc -ffreestanding -mthumb -mcpu=cortex-m4 -g -Og
-LDFLAGS += -Tlinker.ld -nostdlib -static
+LDFLAGS += -Tlinker.ld -nostdlib -static -Wl,--gc-sections
 
 all: rom.bin
 
 rom.bin: rom.elf
 	$(OBJCOPY) -O binary $< $@
 
-rom.elf: main.o startup.o
+rom.elf: main.o startup.o libjustrust.a
 	$(CC) $(LDFLAGS) $^ -o $@
+
+libjustrust.a: justrust/src/lib.rs
+	cargo build --manifest-path justrust/Cargo.toml --target=thumbv7em-none-eabi --release -q
+	cp justrust/target/thumbv7em-none-eabi/release/libjustrust.a .
 
 .PHONY: install
 install: rom.bin
@@ -30,4 +34,5 @@ objdump: rom.elf
 
 .PHONY: clean
 clean:
-	$(RM) rom.elf rom.bin *.o
+	$(RM) rom.elf rom.bin *.o *.a
+	cargo clean --manifest-path justrust/Cargo.toml

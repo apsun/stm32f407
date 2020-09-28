@@ -100,6 +100,10 @@ static void delay(void) {
     }
 }
 
+void abort(const char *message) {
+    while (1);
+}
+
 void isr(int n) {
     if (n < 16) {
         halt();
