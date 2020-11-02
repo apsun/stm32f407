@@ -101,7 +101,7 @@ static void delay(void) {
 }
 
 void abort(const char *message) {
-    while (1);
+    halt();
 }
 
 void isr(int n) {

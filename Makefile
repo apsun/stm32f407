@@ -16,7 +16,7 @@ rom.bin: rom.elf
 rom.elf: main.o startup.o libjustrust.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
-libjustrust.a: justrust/src/lib.rs
+libjustrust.a: $(wildcard justrust/src/*.rs)
 	cargo build --manifest-path justrust/Cargo.toml --target=thumbv7em-none-eabi --release -q
 	cp justrust/target/thumbv7em-none-eabi/release/libjustrust.a .
 
